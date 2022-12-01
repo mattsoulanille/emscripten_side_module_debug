@@ -1,0 +1,18 @@
+{
+  "name": "emscripten_side_module_debug",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build-side-module": "emcc -sSIDE_MODULE=1 -g foo_lib.cpp -o dist/foo_lib.wasm",
+    "build-main-module": "emcc --bind -sMODULARIZE -sMAIN_MODULE=1 -sFORCE_FILESYSTEM -g main.cpp -o dist/main.js",
+    "build": "yarn build-side-module && yarn build-main-module",
+    "serve": "yarn build && esbuild --bundle index.js worker.js --format=iife --outdir=dist/ --servedir=. --serve --sourcemap --external:path --external:fs --external:child_process"
+  },
+  "dependencies": {
+    "comlink": "^4.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.15.16"
+  }
+}
